@@ -44,13 +44,6 @@ pub fn execute(
     }
 }
 
-#[cfg_attr(not(feature = "library"), entry_point)]
-pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
-    match msg {
-        QueryMsg::GetCount {} => to_json_binary(&query::count(deps)?),
-    }
-}
-
 pub mod execute {
     use super::*;
 
@@ -72,6 +65,13 @@ pub mod execute {
             Ok(state)
         })?;
         Ok(Response::new().add_attribute("action", "reset"))
+    }
+}
+
+#[cfg_attr(not(feature = "library"), entry_point)]
+pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
+    match msg {
+        QueryMsg::GetCount {} => to_json_binary(&query::count(deps)?),
     }
 }
 
