@@ -6,7 +6,7 @@ use cosmwasm_std::{
     WasmQuery,
 };
 
-use crate::msg::{ExecuteMsg, GetCountResponse, QueryMsg};
+use cw_test::msg::{ExecuteMsg, GetCountResponse, QueryMsg};
 
 /// CwTemplateContract is a wrapper around Addr that provides a lot of helpers
 /// for working with this.
@@ -49,16 +49,16 @@ impl CwTemplateContract {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::msg::InstantiateMsg;
+    use cw_test::msg::InstantiateMsg;
     use cosmwasm_std::testing::MockApi;
     use cosmwasm_std::{Addr, Coin, Empty, Uint128};
     use cw_multi_test::{App, AppBuilder, Contract, ContractWrapper, Executor};
 
     pub fn contract_template() -> Box<dyn Contract<Empty>> {
         let contract = ContractWrapper::new(
-            crate::contract::execute,
-            crate::contract::instantiate,
-            crate::contract::query,
+            cw_test::contract::execute,
+            cw_test::contract::instantiate,
+            cw_test::contract::query,
         );
         Box::new(contract)
     }
@@ -112,7 +112,7 @@ mod tests {
 
     mod count {
         use super::*;
-        use crate::msg::ExecuteMsg;
+        use cw_test::msg::ExecuteMsg;
 
         #[test]
         fn count() {
