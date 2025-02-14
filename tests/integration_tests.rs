@@ -49,10 +49,10 @@ impl CwTemplateContract {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use cw_test::msg::InstantiateMsg;
     use cosmwasm_std::testing::MockApi;
     use cosmwasm_std::{Addr, Coin, Empty, Uint128};
     use cw_multi_test::{App, AppBuilder, Contract, ContractWrapper, Executor};
+    use cw_test::msg::InstantiateMsg;
 
     pub fn contract_template() -> Box<dyn Contract<Empty>> {
         let contract = ContractWrapper::new(
@@ -118,9 +118,13 @@ mod tests {
         fn count() {
             let (mut app, cw_template_contract) = proper_instantiate();
 
-            let msg = ExecuteMsg::Increment {};
-            let cosmos_msg = cw_template_contract.call(msg).unwrap();
-            app.execute(Addr::unchecked(USER), cosmos_msg).unwrap();
+            let msg = to_json_binary(&ExecuteMsg::Increment {}).unwrap();
+            let execute_msg = WasmMsg::Execute {
+                contract_addr: cw_template_contract.addr().to_string(),
+                msg,
+                funds: vec![],
+            };
+            app.execute(Addr::unchecked(USER), execute_msg.into()).unwrap();
         }
     }
 }
